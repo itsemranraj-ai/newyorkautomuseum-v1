@@ -1,7 +1,8 @@
-﻿import type { Metadata } from 'next';
+import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import PageHeader from '@/components/PageHeader';
 import BoardsAndCommittees from '@/components/BoardsAndCommittees';
+import Accreditations from '@/components/Accreditations';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ export default function CommitteesPage() {
           subtitle="Explore the 11 Museum Wing Development working groups and 32 specialized fiduciary committees available through tax-deductible contributions."
         />
         <BoardsAndCommittees />
+        <Accreditations />
       </main>
       <Footer />
     </div>

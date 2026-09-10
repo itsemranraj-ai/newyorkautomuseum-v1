@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: 'The New York Auto Museum proposed 200,000+ square-foot Manhattan location features world-first glassed floors, a panoramic rooftop patio, 11 dedicated exhibition wings, and an unprecedented experience allowing visitors to sit in up to 100 extravagant vehicles.',
   keywords: 'New York Auto Museum, automotive museum NYC, Manhattan car museum, exotic cars, hypercars, EV innovation, sit in cars, automotive engineering',
   icons: {
-    icon: '/images/NYAM-master logo-transparent-bg.png',
+    icon: '/images/logo-dark.png',
   },
   openGraph: {
     title: 'New York Auto Museum | Premier Manhattan Automotive Landmark',

@@ -1,9 +1,10 @@
-﻿import type { Metadata } from 'next';
+import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import PageHeader from '@/components/PageHeader';
 import PastFuture from '@/components/PastFuture';
 import MuseumSpotlights from '@/components/MuseumSpotlights';
 import NyaeSynergy from '@/components/NyaeSynergy';
+import Accreditations from '@/components/Accreditations';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
@@ -25,6 +26,7 @@ export default function AboutPage() {
         <PastFuture />
         <MuseumSpotlights />
         <NyaeSynergy />
+        <Accreditations />
       </main>
       <Footer />
     </div>

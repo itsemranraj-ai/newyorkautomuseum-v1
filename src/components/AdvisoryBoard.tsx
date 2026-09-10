@@ -26,6 +26,7 @@ function getInitials(name: string): string {
 
 export default function AdvisoryBoard() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [viewMode, setViewMode] = useState<'cards' | 'list'>('cards');
   const [expandedBios, setExpandedBios] = useState<{ [key: string]: boolean }>({});
 
   const categories = advisorsData as CategoryGroup[];
@@ -55,7 +56,7 @@ export default function AdvisoryBoard() {
     >
       <div className="container">
         {/* Section Header */}
-        <div className="text-center" style={{ marginBottom: '56px' }}>
+        <div className="text-center" style={{ marginBottom: '48px' }}>
           <span className="section-tag">Governance &amp; Leadership</span>
           <h2 className="section-title">The Board &amp; Advisors</h2>
           <p className="section-subtitle">
@@ -63,184 +64,241 @@ export default function AdvisoryBoard() {
           </p>
         </div>
 
-        {/* Modern Pill Navigation */}
+        {/* Controls Toolbar: Categories + View Switcher */}
         <div
           style={{
             display: 'flex',
-            flexWrap: 'wrap',
-            gap: '10px',
-            justifyContent: 'center',
-            marginBottom: '56px',
-            maxWidth: '1100px',
-            margin: '0 auto 56px auto',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '20px',
+            marginBottom: '48px',
           }}
         >
-          <button
-            onClick={() => setSelectedCategory('all')}
+          {/* Category Filter Pills */}
+          <div
             style={{
-              padding: '10px 20px',
-              borderRadius: '9999px',
-              border:
-                selectedCategory === 'all'
-                  ? '1px solid #DC2626'
-                  : '1px solid #CBD5E1',
-              backgroundColor:
-                selectedCategory === 'all' ? '#DC2626' : '#FFFFFF',
-              color: selectedCategory === 'all' ? '#FFFFFF' : '#1E293B',
-              fontSize: '0.85rem',
-              fontWeight: 700,
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              boxShadow: '0 2px 8px rgba(15, 23, 42, 0.04)',
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '8px',
+              justifyContent: 'center',
+              maxWidth: '1100px',
             }}
           >
-            All Departments ({totalMembers})
-          </button>
-          {categories.map((cat) => (
             <button
-              key={cat.category}
-              onClick={() => setSelectedCategory(cat.category)}
+              onClick={() => setSelectedCategory('all')}
               style={{
-                padding: '10px 20px',
+                padding: '9px 18px',
                 borderRadius: '9999px',
                 border:
-                  selectedCategory === cat.category
+                  selectedCategory === 'all'
                     ? '1px solid #DC2626'
                     : '1px solid #CBD5E1',
                 backgroundColor:
-                  selectedCategory === cat.category ? '#DC2626' : '#FFFFFF',
-                color: selectedCategory === cat.category ? '#FFFFFF' : '#1E293B',
+                  selectedCategory === 'all' ? '#DC2626' : '#FFFFFF',
+                color: selectedCategory === 'all' ? '#FFFFFF' : '#1E293B',
                 fontSize: '0.85rem',
                 fontWeight: 700,
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
-                boxShadow: '0 2px 8px rgba(15, 23, 42, 0.04)',
+                boxShadow: '0 2px 6px rgba(15, 23, 42, 0.04)',
               }}
             >
-              {cat.category} ({cat.members.length})
+              All Departments ({totalMembers})
             </button>
-          ))}
+            {categories.map((cat) => (
+              <button
+                key={cat.category}
+                onClick={() => setSelectedCategory(cat.category)}
+                style={{
+                  padding: '9px 18px',
+                  borderRadius: '9999px',
+                  border:
+                    selectedCategory === cat.category
+                      ? '1px solid #DC2626'
+                      : '1px solid #CBD5E1',
+                  backgroundColor:
+                    selectedCategory === cat.category ? '#DC2626' : '#FFFFFF',
+                  color: selectedCategory === cat.category ? '#FFFFFF' : '#1E293B',
+                  fontSize: '0.85rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: '0 2px 6px rgba(15, 23, 42, 0.04)',
+                }}
+              >
+                {cat.category} ({cat.members.length})
+              </button>
+            ))}
+          </div>
+
+          {/* View Mode Toggle: Wide Cards vs Executive Directory Rows */}
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              backgroundColor: '#FFFFFF',
+              border: '1px solid #CBD5E1',
+              borderRadius: '8px',
+              padding: '4px',
+              gap: '4px',
+              boxShadow: '0 2px 6px rgba(15, 23, 42, 0.04)',
+            }}
+          >
+            <button
+              onClick={() => setViewMode('cards')}
+              style={{
+                padding: '6px 16px',
+                borderRadius: '6px',
+                border: 'none',
+                backgroundColor: viewMode === 'cards' ? '#0F172A' : 'transparent',
+                color: viewMode === 'cards' ? '#FFFFFF' : '#475569',
+                fontSize: '0.82rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <span>▦</span> Wide Editorial Cards
+            </button>
+            <button
+              onClick={() => setViewMode('list')}
+              style={{
+                padding: '6px 16px',
+                borderRadius: '6px',
+                border: 'none',
+                backgroundColor: viewMode === 'list' ? '#0F172A' : 'transparent',
+                color: viewMode === 'list' ? '#FFFFFF' : '#475569',
+                fontSize: '0.82rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <span>☰</span> Executive Directory Rows
+            </button>
+          </div>
         </div>
 
-        {/* Grouped Department Blocks */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '64px' }}>
-          {displayedCategories.map((group) => (
-            <div key={group.category}>
-              {/* Department Header with Accent Bar */}
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '16px',
-                  marginBottom: '32px',
-                }}
-              >
+        {/* ========================================================= */}
+        {/* VIEW MODE 1: Wide Editorial Cards (Ample Title Width)     */}
+        {/* ========================================================= */}
+        {viewMode === 'cards' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '64px' }}>
+            {displayedCategories.map((group) => (
+              <div key={group.category}>
+                {/* Department Accent Header */}
                 <div
                   style={{
-                    width: '6px',
-                    height: '32px',
-                    backgroundColor: '#DC2626',
-                    borderRadius: '3px',
-                  }}
-                />
-                <h3
-                  style={{
-                    fontSize: '1.5rem',
-                    fontWeight: 900,
-                    color: '#0F172A',
-                    letterSpacing: '-0.02em',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '16px',
+                    marginBottom: '28px',
                   }}
                 >
-                  {group.category}
-                </h3>
-                <span
-                  style={{
-                    fontSize: '0.8rem',
-                    fontWeight: 700,
-                    backgroundColor: '#E2E8F0',
-                    color: '#475569',
-                    padding: '3px 10px',
-                    borderRadius: '9999px',
-                  }}
-                >
-                  {group.members.length} Members
-                </span>
+                  <div
+                    style={{
+                      width: '6px',
+                      height: '32px',
+                      backgroundColor: '#DC2626',
+                      borderRadius: '3px',
+                    }}
+                  />
+                  <h3
+                    style={{
+                      fontSize: '1.45rem',
+                      fontWeight: 900,
+                      color: '#0F172A',
+                      letterSpacing: '-0.02em',
+                    }}
+                  >
+                    {group.category}
+                  </h3>
+                  <span
+                    style={{
+                      fontSize: '0.8rem',
+                      fontWeight: 700,
+                      backgroundColor: '#E2E8F0',
+                      color: '#475569',
+                      padding: '3px 10px',
+                      borderRadius: '9999px',
+                    }}
+                  >
+                    {group.members.length} Members
+                  </span>
+                  <div style={{ flex: 1, height: '1px', backgroundColor: '#E2E8F0' }} />
+                </div>
+
+                {/* Wide Cards Grid (min 480px width so titles NEVER get squeezed) */}
                 <div
                   style={{
-                    flex: 1,
-                    height: '1px',
-                    backgroundColor: '#E2E8F0',
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(480px, 1fr))',
+                    gap: '24px',
                   }}
-                />
-              </div>
+                >
+                  {group.members.map((member, idx) => {
+                    const uniqueKey = `${group.category}-${member.name}-${idx}`;
+                    const isExpanded = !!expandedBios[uniqueKey];
+                    const hasLongBio = member.bio.length > 280;
+                    const displayBio =
+                      !hasLongBio || isExpanded
+                        ? member.bio
+                        : `${member.bio.slice(0, 280)}...`;
 
-              {/* Modern Cards Grid */}
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
-                  gap: '24px',
-                }}
-              >
-                {group.members.map((member, idx) => {
-                  const uniqueKey = `${group.category}-${member.name}-${idx}`;
-                  const isExpanded = !!expandedBios[uniqueKey];
-                  const hasLongBio = member.bio.length > 260;
-                  const displayBio =
-                    !hasLongBio || isExpanded
-                      ? member.bio
-                      : `${member.bio.slice(0, 260)}...`;
-
-                  return (
-                    <div
-                      key={uniqueKey}
-                      style={{
-                        backgroundColor: '#FFFFFF',
-                        border: '1px solid #E2E8F0',
-                        borderRadius: '16px',
-                        padding: '30px',
-                        boxShadow: '0 4px 20px rgba(15, 23, 42, 0.04)',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'space-between',
-                        transition: 'transform 0.25s ease, box-shadow 0.25s ease',
-                      }}
-                    >
-                      <div>
-                        {/* Top: Avatar Monogram + Name + Fixed Readable LinkedIn Button */}
-                        <div
-                          style={{
-                            display: 'flex',
-                            alignItems: 'flex-start',
-                            justifyContent: 'space-between',
-                            gap: '14px',
-                            marginBottom: '16px',
-                          }}
-                        >
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                            <div
-                              style={{
-                                width: '48px',
-                                height: '48px',
-                                borderRadius: '12px',
-                                background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
-                                color: '#FFFFFF',
-                                fontWeight: 800,
-                                fontSize: '1rem',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                flexShrink: 0,
-                                border: '1px solid rgba(255, 255, 255, 0.1)',
-                                boxShadow: '0 2px 8px rgba(15, 23, 42, 0.15)',
-                              }}
-                            >
-                              {getInitials(member.name)}
-                            </div>
-                            <div>
+                    return (
+                      <div
+                        key={uniqueKey}
+                        style={{
+                          backgroundColor: '#FFFFFF',
+                          border: '1px solid #E2E8F0',
+                          borderRadius: '16px',
+                          padding: '32px',
+                          boxShadow: '0 4px 20px rgba(15, 23, 42, 0.04)',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'space-between',
+                          transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+                        }}
+                      >
+                        <div>
+                          {/* Top Row: Avatar + Name on Left, LinkedIn on Right */}
+                          <div
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              gap: '16px',
+                              marginBottom: '14px',
+                            }}
+                          >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                              <div
+                                style={{
+                                  width: '46px',
+                                  height: '46px',
+                                  borderRadius: '10px',
+                                  background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
+                                  color: '#FFFFFF',
+                                  fontWeight: 800,
+                                  fontSize: '0.95rem',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  flexShrink: 0,
+                                  boxShadow: '0 2px 6px rgba(15, 23, 42, 0.15)',
+                                }}
+                              >
+                                {getInitials(member.name)}
+                              </div>
                               <h4
                                 style={{
-                                  fontSize: '1.25rem',
+                                  fontSize: '1.35rem',
                                   fontWeight: 800,
                                   color: '#0F172A',
                                   lineHeight: 1.2,
@@ -249,114 +307,295 @@ export default function AdvisoryBoard() {
                               >
                                 {member.name}
                               </h4>
-                              <div
+                            </div>
+
+                            {/* Verified LinkedIn Button */}
+                            {member.linkedin && (
+                              <a
+                                href={member.linkedin}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={`${member.name} LinkedIn Profile`}
                                 style={{
-                                  color: '#DC2626',
-                                  fontSize: '0.85rem',
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '6px',
+                                  padding: '6px 12px',
+                                  borderRadius: '6px',
+                                  backgroundColor: '#0A66C2',
+                                  color: '#FFFFFF',
+                                  fontSize: '0.75rem',
                                   fontWeight: 700,
-                                  marginTop: '4px',
+                                  textDecoration: 'none',
+                                  flexShrink: 0,
+                                  boxShadow: '0 2px 6px rgba(10, 102, 194, 0.25)',
+                                  transition: 'all 0.2s ease',
                                 }}
                               >
-                                {member.position}
-                              </div>
-                            </div>
+                                <Image
+                                  src="/images/social-linkedin.svg"
+                                  alt="LinkedIn"
+                                  width={14}
+                                  height={14}
+                                  style={{ filter: 'brightness(0) invert(1)' }}
+                                />
+                                <span>LinkedIn</span>
+                              </a>
+                            )}
                           </div>
 
-                          {/* HIGHLY READABLE OFFICIAL LINKEDIN BADGE */}
-                          {member.linkedin && (
-                            <a
-                              href={member.linkedin}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              aria-label={`${member.name} LinkedIn Profile`}
+                          {/* Full-Width Role Badge (Has 100% of card width, never squeezed!) */}
+                          <div style={{ marginBottom: '18px' }}>
+                            <span
                               style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                gap: '6px',
-                                padding: '6px 12px',
-                                borderRadius: '8px',
-                                backgroundColor: '#0A66C2',
-                                color: '#FFFFFF',
-                                fontSize: '0.75rem',
+                                display: 'inline-block',
+                                padding: '6px 14px',
+                                borderRadius: '6px',
+                                backgroundColor: 'rgba(220, 38, 38, 0.06)',
+                                border: '1px solid rgba(220, 38, 38, 0.2)',
+                                color: '#DC2626',
+                                fontSize: '0.88rem',
                                 fontWeight: 700,
-                                textDecoration: 'none',
-                                flexShrink: 0,
-                                boxShadow: '0 2px 8px rgba(10, 102, 194, 0.25)',
-                                transition: 'all 0.2s ease',
-                              }}
-                              onMouseEnter={(e) => {
-                                e.currentTarget.style.backgroundColor = '#004182';
-                                e.currentTarget.style.transform = 'translateY(-1px)';
-                              }}
-                              onMouseLeave={(e) => {
-                                e.currentTarget.style.backgroundColor = '#0A66C2';
-                                e.currentTarget.style.transform = 'translateY(0)';
+                                letterSpacing: '0.01em',
+                                lineHeight: 1.4,
                               }}
                             >
-                              <Image
-                                src="/images/social-linkedin.svg"
-                                alt="LinkedIn"
-                                width={14}
-                                height={14}
-                                style={{ filter: 'brightness(0) invert(1)' }}
-                              />
-                              <span>LinkedIn</span>
-                            </a>
+                              {member.position}
+                            </span>
+                          </div>
+
+                          {/* Bio Content */}
+                          {member.bio && (
+                            <p
+                              style={{
+                                fontSize: '0.95rem',
+                                color: '#475569',
+                                lineHeight: 1.75,
+                                whiteSpace: 'pre-line',
+                              }}
+                            >
+                              {displayBio}
+                            </p>
                           )}
                         </div>
 
-                        {/* Bio Content */}
-                        {member.bio && (
-                          <p
+                        {/* Read More Toggle */}
+                        {hasLongBio && (
+                          <div
                             style={{
-                              fontSize: '0.94rem',
-                              color: '#475569',
-                              lineHeight: 1.75,
-                              whiteSpace: 'pre-line',
-                              marginTop: '8px',
+                              marginTop: '18px',
+                              paddingTop: '14px',
+                              borderTop: '1px solid #F1F5F9',
                             }}
                           >
-                            {displayBio}
-                          </p>
+                            <button
+                              onClick={() => toggleBio(uniqueKey)}
+                              style={{
+                                background: 'transparent',
+                                border: 'none',
+                                color: '#0284C7',
+                                fontSize: '0.85rem',
+                                fontWeight: 700,
+                                cursor: 'pointer',
+                                padding: 0,
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                              }}
+                            >
+                              {isExpanded ? 'Show less ↑' : 'Read full biography ↓'}
+                            </button>
+                          </div>
                         )}
                       </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
-                      {/* Read More / Read Less Toggle */}
-                      {hasLongBio && (
+        {/* ========================================================= */}
+        {/* VIEW MODE 2: Executive Directory Rows (Full-Width Rows)  */}
+        {/* ========================================================= */}
+        {viewMode === 'list' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '48px' }}>
+            {displayedCategories.map((group) => (
+              <div key={group.category}>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '14px',
+                    marginBottom: '20px',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '6px',
+                      height: '28px',
+                      backgroundColor: '#DC2626',
+                      borderRadius: '3px',
+                    }}
+                  />
+                  <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0F172A' }}>
+                    {group.category}
+                  </h3>
+                  <span
+                    style={{
+                      fontSize: '0.8rem',
+                      fontWeight: 700,
+                      backgroundColor: '#E2E8F0',
+                      color: '#475569',
+                      padding: '2px 10px',
+                      borderRadius: '9999px',
+                    }}
+                  >
+                    {group.members.length} Members
+                  </span>
+                  <div style={{ flex: 1, height: '1px', backgroundColor: '#E2E8F0' }} />
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  {group.members.map((member, idx) => {
+                    const uniqueKey = `list-${group.category}-${member.name}-${idx}`;
+                    const isExpanded = !!expandedBios[uniqueKey];
+
+                    return (
+                      <div
+                        key={uniqueKey}
+                        style={{
+                          backgroundColor: '#FFFFFF',
+                          border: '1px solid #E2E8F0',
+                          borderRadius: '12px',
+                          padding: '24px 28px',
+                          boxShadow: '0 2px 10px rgba(15, 23, 42, 0.03)',
+                        }}
+                      >
                         <div
                           style={{
-                            marginTop: '16px',
-                            paddingTop: '14px',
-                            borderTop: '1px solid #F1F5F9',
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            gap: '16px',
                           }}
                         >
-                          <button
-                            onClick={() => toggleBio(uniqueKey)}
+                          {/* Name & Title on a Wide Line */}
+                          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '16px' }}>
+                            <div
+                              style={{
+                                width: '40px',
+                                height: '40px',
+                                borderRadius: '8px',
+                                background: '#0F172A',
+                                color: '#FFFFFF',
+                                fontWeight: 800,
+                                fontSize: '0.85rem',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flexShrink: 0,
+                              }}
+                            >
+                              {getInitials(member.name)}
+                            </div>
+                            <div>
+                              <h4 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0F172A' }}>
+                                {member.name}
+                              </h4>
+                            </div>
+                            <span
+                              style={{
+                                padding: '4px 12px',
+                                borderRadius: '6px',
+                                backgroundColor: 'rgba(220, 38, 38, 0.06)',
+                                border: '1px solid rgba(220, 38, 38, 0.2)',
+                                color: '#DC2626',
+                                fontSize: '0.85rem',
+                                fontWeight: 700,
+                              }}
+                            >
+                              {member.position}
+                            </span>
+                          </div>
+
+                          {/* Actions: LinkedIn & Expand Bio */}
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            {member.bio && (
+                              <button
+                                onClick={() => toggleBio(uniqueKey)}
+                                style={{
+                                  background: 'transparent',
+                                  border: '1px solid #CBD5E1',
+                                  borderRadius: '6px',
+                                  padding: '6px 14px',
+                                  color: '#0284C7',
+                                  fontSize: '0.8rem',
+                                  fontWeight: 700,
+                                  cursor: 'pointer',
+                                }}
+                              >
+                                {isExpanded ? 'Hide Bio ↑' : 'View Bio ↓'}
+                              </button>
+                            )}
+
+                            {member.linkedin && (
+                              <a
+                                href={member.linkedin}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '6px',
+                                  padding: '6px 12px',
+                                  borderRadius: '6px',
+                                  backgroundColor: '#0A66C2',
+                                  color: '#FFFFFF',
+                                  fontSize: '0.75rem',
+                                  fontWeight: 700,
+                                  textDecoration: 'none',
+                                }}
+                              >
+                                <Image
+                                  src="/images/social-linkedin.svg"
+                                  alt="LinkedIn"
+                                  width={14}
+                                  height={14}
+                                  style={{ filter: 'brightness(0) invert(1)' }}
+                                />
+                                <span>LinkedIn</span>
+                              </a>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Expanded Bio Drawer in Row View */}
+                        {isExpanded && member.bio && (
+                          <div
                             style={{
-                              background: 'transparent',
-                              border: 'none',
-                              color: '#0284C7',
-                              fontSize: '0.85rem',
-                              fontWeight: 700,
-                              cursor: 'pointer',
-                              padding: 0,
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              gap: '4px',
+                              marginTop: '16px',
+                              paddingTop: '16px',
+                              borderTop: '1px solid #F1F5F9',
+                              color: '#475569',
+                              fontSize: '0.94rem',
+                              lineHeight: 1.75,
+                              whiteSpace: 'pre-line',
                             }}
                           >
-                            {isExpanded ? 'Show less ↑' : 'Read full biography ↓'}
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+                            {member.bio}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

@@ -1,7 +1,8 @@
-﻿import type { Metadata } from 'next';
+import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import PageHeader from '@/components/PageHeader';
 import CareersSection from '@/components/CareersSection';
+import Accreditations from '@/components/Accreditations';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ export default function CareersPage() {
           subtitle="Explore 29 open positions across leadership, operations, curation, marketing, technology, and community development."
         />
         <CareersSection />
+        <Accreditations />
       </main>
       <Footer />
     </div>

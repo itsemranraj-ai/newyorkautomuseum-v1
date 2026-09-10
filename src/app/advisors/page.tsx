@@ -1,7 +1,8 @@
-﻿import type { Metadata } from 'next';
+import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import PageHeader from '@/components/PageHeader';
 import AdvisoryBoard from '@/components/AdvisoryBoard';
+import Accreditations from '@/components/Accreditations';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ export default function AdvisorsPage() {
           subtitle="Meet the international leaders, former Volkswagen AG/Autostadt executives, legal counsel, and curators guiding the New York Auto Museum."
         />
         <AdvisoryBoard />
+        <Accreditations />
       </main>
       <Footer />
     </div>

@@ -1,257 +1,418 @@
-﻿'use client';
+'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 
-const slideshowImages = [
-  'IMG_0000.jpg',
-  'IMG_5097.jpg',
-  'IMG_4959.jpg',
-  'IMG_1514.jpg',
-  'IMG_1659.jpg',
-  'IMG_1756.jpg',
-  'IMG_1815.jpg',
-  'IMG_2065.jpg',
-  'IMG_2071.jpg',
-  'IMG_2267.jpg',
-  'IMG_2298.jpg',
-  'IMG_2327.jpg',
-  'IMG_2587.jpg',
-  'IMG_2728.jpg',
-  'IMG_2882.jpg',
-  'IMG_2895.jpg',
-  'IMG_2931.jpg',
-  'IMG_3069.jpg',
-  'IMG_3092.jpg',
+interface HeroSlide {
+  image: string;
+  wing: string;
+  badge: string;
+  headline: string;
+  description: string;
+  accentColor: string;
+}
+
+const heroSlides: HeroSlide[] = [
+  {
+    image: 'IMG_0000.jpg',
+    wing: 'Art, Film and Television',
+    badge: 'Iconic Concept Prototype',
+    headline: 'Where Vision Meets Velocity',
+    description: 'Futuristic turbine canopy concepts and legendary screen icons that redefined 20th-century popular culture.',
+    accentColor: '#EF4444',
+  },
+  {
+    image: 'IMG_5097.jpg',
+    wing: 'Motorsport Heritage',
+    badge: 'Championship Endurance',
+    headline: 'The Golden Age of Speed',
+    description: 'Pioneering Grand Prix machines, endurance titans, and historic racing liveries preserved in pristine mechanical glory.',
+    accentColor: '#F59E0B',
+  },
+  {
+    image: 'IMG_4959.jpg',
+    wing: 'The American Muscle Era',
+    badge: 'Detroit Power',
+    headline: 'Raw Horsepower & American Steel',
+    description: 'The golden decade of tire-smoking V8s, historic dragstrip icons, and bold American road presence.',
+    accentColor: '#F97316',
+  },
+  {
+    image: 'IMG_1514.jpg',
+    wing: 'Living Automotive History',
+    badge: 'Preserved Cultural Icons',
+    headline: 'Centuries of Human Ingenuity',
+    description: 'From hand-hammered coachbuilt coachwork to the milestone industrial eras that put the modern world on wheels.',
+    accentColor: '#10B981',
+  },
+  {
+    image: 'IMG_1659.jpg',
+    wing: 'Coachbuilding & Custom Design',
+    badge: 'Bespoke Craftsmanship',
+    headline: 'The Art of Haute Automobilia',
+    description: 'Rare one-off coachbuilt masterpieces sculpted by legendary design houses and master metalworkers.',
+    accentColor: '#A855F7',
+  },
+  {
+    image: 'IMG_1756.jpg',
+    wing: 'Automotive Restoration',
+    badge: 'Authentic Preservation',
+    headline: 'Resurrecting Rolling Landmarks',
+    description: 'Master technicians preserving period authenticity, factory blueprints, and time-honored mechanical crafts.',
+    accentColor: '#14B8A6',
+  },
+  {
+    image: 'IMG_1815.jpg',
+    wing: 'Wheels & Rims Wing',
+    badge: 'Sculptural Foundations',
+    headline: 'Form, Function & Traction',
+    description: 'Historic wire spokes, cast magnesium racing alloys, and cutting-edge forged carbon wheel innovations.',
+    accentColor: '#EAB308',
+  },
+  {
+    image: 'IMG_2065.jpg',
+    wing: 'Automotive Mechanics',
+    badge: 'Precision Engineering',
+    headline: 'The Anatomy of Motion',
+    description: 'Unveiling complex internal combustion marvels, multi-valve valvetrains, and intricate transmission works.',
+    accentColor: '#6366F1',
+  },
+  {
+    image: 'IMG_2071.jpg',
+    wing: 'Future Automotive Technology',
+    badge: 'Next-Gen Propulsion',
+    headline: 'Designing Tomorrow Today',
+    description: 'Aerodynamic architecture, sustainable high-performance powertrains, and cutting-edge concept engineering.',
+    accentColor: '#38BDF8',
+  },
+  {
+    image: 'IMG_2267.jpg',
+    wing: 'Interactive STEM Driving Labs',
+    badge: 'Hands-On Discovery',
+    headline: 'Experience Science in Motion',
+    description: 'Interactive STEM simulation labs, aerodynamic wind tunnels, and tactile mechanical learning for all ages.',
+    accentColor: '#8B5CF6',
+  },
+  {
+    image: 'IMG_2298.jpg',
+    wing: 'Alternative Energy & EVs',
+    badge: 'Clean Horizons',
+    headline: 'Electrified Velocity',
+    description: 'Early 20th-century electric pioneers to revolutionary multi-megawatt solid-state hypercar architectures.',
+    accentColor: '#06B6D4',
+  },
+  {
+    image: 'IMG_2327.jpg',
+    wing: 'Living Automotive History',
+    badge: 'Milestone Eras',
+    headline: 'Echoes of the Open Road',
+    description: 'The machines that charted uncharted frontiers, conquered cross-continental highways, and inspired generations.',
+    accentColor: '#22C55E',
+  },
+  {
+    image: 'IMG_2587.jpg',
+    wing: 'Art, Film and Television',
+    badge: 'Cinematic Legends',
+    headline: 'Screen Icons That Drove History',
+    description: 'Famous hero vehicles, television chase legends, and unforgettable cinematic concept designs.',
+    accentColor: '#EC4899',
+  },
+  {
+    image: 'IMG_2728.jpg',
+    wing: 'Motorsport Heritage',
+    badge: 'Paddock Legends',
+    headline: 'Built for the Winner’s Circle',
+    description: 'Trophies, timing sheets, and the unyielding machines that triumphed at Le Mans, Daytona, and Monza.',
+    accentColor: '#F59E0B',
+  },
+  {
+    image: 'IMG_2882.jpg',
+    wing: 'The American Muscle Era',
+    badge: 'Trans-Am & Drag Classics',
+    headline: 'Thunder in the Paddock',
+    description: 'High-compression big blocks and homologation specials engineered to conquer the quarter-mile.',
+    accentColor: '#F43F5E',
+  },
+  {
+    image: 'IMG_2895.jpg',
+    wing: 'Hypercars and Supercars',
+    badge: 'Peak Engineering',
+    headline: 'The Outer Limits of Performance',
+    description: 'Ultra-exclusive homologation icons, lightweight carbon-composite structures, and boundary-pushing engineering.',
+    accentColor: '#D946EF',
+  },
+  {
+    image: 'IMG_2931.jpg',
+    wing: 'Automotive Mechanics',
+    badge: 'Mechanical Artistry',
+    headline: 'Purity of the Machine',
+    description: 'Intricate carburetors, turbocharger manifolds, and hand-tuned mechanical harmony in motion.',
+    accentColor: '#3B82F6',
+  },
+  {
+    image: 'IMG_3069.jpg',
+    wing: 'Coachbuilding & Custom Design',
+    badge: 'Sculpted Silhouette',
+    headline: 'Lines Drawn Without Compromise',
+    description: 'Bespoke hand-formed aluminum panels, teardrop fenders, and timeless automotive styling.',
+    accentColor: '#A855F7',
+  },
+  {
+    image: 'IMG_3092.jpg',
+    wing: 'Future Automotive Technology',
+    badge: 'Autonomous & Connected',
+    headline: 'Pioneering the Next Century',
+    description: 'Advanced sensor suites, carbon architectures, and the limitless horizon of 21st-century mobility.',
+    accentColor: '#0EA5E9',
+  },
 ];
 
-const exhibitionWings = [
-  'Wheels & Rims Wing',
-  'Automotive Mechanics',
-  'Future Automotive Technology',
-  'Art, Film and Television',
-  'Living Automotive History',
-  'Automotive Restoration',
-  'Motorsport Heritage',
-  'Hypercars and Supercars',
-  'The American Muscle Era',
-  'Alternative Energy & EVs',
-  'Coachbuilding & Custom Design',
-  'Interactive STEM Driving Labs',
-];
+const SLIDE_DURATION = 5500; // 5.5 seconds per slide
 
 export default function HeroSlideshow() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [currentWingIdx, setCurrentWingIdx] = useState(0);
-  const [flipActive, setFlipActive] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slideshowImages.length);
-    }, 5000);
-    return () => clearInterval(timer);
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setFlipActive(true);
-      setTimeout(() => {
-        setCurrentWingIdx((prev) => (prev + 1) % exhibitionWings.length);
-        setFlipActive(false);
-      }, 350);
-    }, 3000);
-    return () => clearInterval(interval);
+  const prevSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
   }, []);
+
+  const goToSlide = (idx: number) => {
+    setCurrentSlide(idx);
+  };
+
+  // Autoplay interval
+  useEffect(() => {
+    if (!isPlaying) {
+      if (timerRef.current) clearInterval(timerRef.current);
+      return;
+    }
+
+    timerRef.current = setInterval(() => {
+      nextSlide();
+    }, SLIDE_DURATION);
+
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [isPlaying, nextSlide, currentSlide]);
+
+  // Keyboard arrow navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [nextSlide, prevSlide]);
+
+  // Touch swipe support
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX - touchEndX;
+    if (diff > 50) nextSlide();
+    else if (diff < -50) prevSlide();
+    setTouchStartX(null);
+  };
+
+  const activeSlideData = heroSlides[currentSlide];
 
   return (
     <section
       id="banner"
-      style={{
-        position: 'relative',
-        width: '100%',
-        height: '100vh',
-        minHeight: '650px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden',
-        background: '#0B0F19',
-      }}
+      className="hero-carousel-section"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      aria-label="New York Auto Museum Hero Carousel"
     >
-      {/* 19 authentic client photos in crossfade */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 1,
-        }}
-      >
-        {slideshowImages.map((imgName, index) => (
-          <div
-            key={imgName}
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              opacity: currentSlide === index ? 1 : 0,
-              transition: 'opacity 1.2s ease-in-out',
-              zIndex: currentSlide === index ? 2 : 1,
-            }}
-          >
-            <Image
-              src={`/images/slideshow/${imgName}`}
-              alt={`New York Auto Museum exhibit ${index + 1}`}
-              fill
-              priority={index === 0}
-              style={{ objectFit: 'cover', objectPosition: 'center' }}
-            />
-          </div>
-        ))}
+      {/* Background Slides with Ken Burns Smooth Zoom (All 19 Client Photos) */}
+      <div className="hero-slides-layer">
+        {heroSlides.map((slide, index) => {
+          const isActive = currentSlide === index;
+          return (
+            <div
+              key={slide.image}
+              className={`hero-slide-item ${isActive ? 'is-active' : ''}`}
+            >
+              <Image
+                src={`/images/slideshow/${slide.image}`}
+                alt={slide.headline}
+                fill
+                priority={index <= 1}
+                className="hero-slide-img"
+                sizes="100vw"
+                quality={90}
+              />
+            </div>
+          );
+        })}
       </div>
 
-      {/* Cinematic Gradient Shade transitioning into Light Theme #F8FAFC */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background:
-            'linear-gradient(to bottom, rgba(15, 23, 42, 0.6) 0%, rgba(15, 23, 42, 0.4) 40%, rgba(15, 23, 42, 0.75) 80%, #F8FAFC 100%)',
-          zIndex: 3,
-        }}
-      />
+      {/* Cinematic Multi-Layer Gradients for Contrast & Theme Transition */}
+      <div className="hero-gradient-overlay" />
 
-      {/* Hero Content */}
-      <div
-        className="container"
-        style={{
-          position: 'relative',
-          zIndex: 10,
-          textAlign: 'center',
-          maxWidth: '900px',
-          padding: '0 24px',
-        }}
+      {/* Floating Top-Right Institutional Badge */}
+      <div className="hero-top-badge" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <span className="hero-badge-dot" />
+        <span>Proposed Manhattan Landmark • 200,000+ Sq Ft</span>
+      </div>
+
+      {/* Floating Side Navigation Arrows */}
+      <button
+        type="button"
+        onClick={prevSlide}
+        className="hero-nav-arrow hero-nav-prev"
+        aria-label="Previous Slide"
+        title="Previous Exhibit (Left Arrow)"
       >
-        <h1
-          style={{
-            fontSize: 'clamp(2.5rem, 5.5vw, 4.8rem)',
-            fontWeight: 900,
-            letterSpacing: '-0.03em',
-            lineHeight: 1.1,
-            color: '#FFFFFF',
-            textShadow: '0 4px 30px rgba(0, 0, 0, 0.9)',
-            marginBottom: '20px',
-          }}
-        >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+      </button>
+
+      <button
+        type="button"
+        onClick={nextSlide}
+        className="hero-nav-arrow hero-nav-next"
+        aria-label="Next Slide"
+        title="Next Exhibit (Right Arrow)"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+      </button>
+
+      {/* Hero Center Content Card */}
+      <div className="container hero-content-wrapper">
+        {/* Dynamic Slide Badge */}
+        <div className="hero-badge-pill" style={{ borderColor: `${activeSlideData.accentColor}40` }}>
+          <span
+            className="hero-badge-accent-dot"
+            style={{ backgroundColor: activeSlideData.accentColor }}
+          />
+          <span className="hero-badge-text">{activeSlideData.badge}</span>
+        </div>
+
+        {/* Main Institutional Headline */}
+        <h1 className="hero-main-title">
           New York Auto Museum
         </h1>
 
-        {/* 3D Flip Rolling Wings Text */}
-        <div
-          style={{
-            fontSize: 'clamp(1.1rem, 2.2vw, 1.6rem)',
-            color: '#F8FAFC',
-            fontWeight: 500,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-            gap: '10px',
-            marginBottom: '36px',
-            textShadow: '0 2px 16px rgba(0, 0, 0, 0.9)',
-          }}
-        >
-          <span style={{ color: '#E2E8F0' }}>Permanent Exhibitions &amp; Wings:</span>
-          <div
-            className="flip-container"
-            style={{
-              display: 'inline-block',
-              minWidth: '280px',
-              textAlign: 'left',
-            }}
+        {/* Dynamic Exhibition Wing & Tagline */}
+        <div className="hero-wing-showcase">
+          <span className="hero-wing-label">Exhibition Wing:</span>
+          <span
+            className="hero-wing-name"
+            style={{ color: activeSlideData.accentColor }}
           >
-            <span
-              className="flip-text"
-              style={{
-                color: '#EF4444',
-                fontWeight: 800,
-                borderBottom: '2px solid rgba(239, 68, 68, 0.8)',
-                paddingBottom: '2px',
-                transform: flipActive ? 'rotateX(90deg)' : 'rotateX(0deg)',
-                opacity: flipActive ? 0 : 1,
-              }}
-            >
-              {exhibitionWings[currentWingIdx]}
-            </span>
-          </div>
+            {activeSlideData.wing}
+          </span>
         </div>
 
-        {/* Learn More Button */}
-        <div>
-          <a
-            href="#past-future"
-            className="btn btn-primary"
-            style={{
-              padding: '15px 36px',
-              fontSize: '1rem',
-              letterSpacing: '0.04em',
-              textTransform: 'uppercase',
-              fontWeight: 700,
-            }}
-          >
-            Learn More
+        {/* Slide Description */}
+        <p className="hero-description">
+          {activeSlideData.description}
+        </p>
+
+        {/* Action Buttons */}
+        <div className="hero-actions">
+          <a href="#past-future" className="btn btn-primary hero-btn-main">
+            <span>Explore The Museum</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <polyline points="19 12 12 19 5 12" />
+            </svg>
+          </a>
+
+          <a href="#spotlights" className="btn hero-btn-glass">
+            <span>View 11 Curated Wings</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
           </a>
         </div>
       </div>
 
-      {/* Slide Navigation Dots & Image Counter */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '36px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 15,
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-        }}
-      >
-        <span
-          style={{
-            fontSize: '0.75rem',
-            fontWeight: 700,
-            letterSpacing: '0.1em',
-            color: '#334155',
-            marginRight: '8px',
-          }}
-        >
-          {String(currentSlide + 1).padStart(2, '0')} / {String(slideshowImages.length).padStart(2, '0')}
-        </span>
-        {slideshowImages.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => setCurrentSlide(idx)}
-            style={{
-              width: currentSlide === idx ? '24px' : '6px',
-              height: '6px',
-              borderRadius: '3px',
-              backgroundColor: currentSlide === idx ? '#DC2626' : 'rgba(51, 65, 85, 0.4)',
-              border: 'none',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              padding: 0,
-            }}
-            aria-label={`Go to slide ${idx + 1}`}
-          />
-        ))}
+      {/* Modern Bottom Carousel Control Bar & Progress Track with All 19 Slides */}
+      <div className="hero-bottom-control-deck">
+        <div className="container hero-deck-container">
+          {/* Left: Slide Counter & Active Wing */}
+          <div className="hero-deck-left">
+            <span className="hero-counter-current">
+              {String(currentSlide + 1).padStart(2, '0')}
+            </span>
+            <span className="hero-counter-divider">/</span>
+            <span className="hero-counter-total">
+              {String(heroSlides.length).padStart(2, '0')}
+            </span>
+            <span className="hero-counter-wing-title" title={activeSlideData.wing}>
+              {activeSlideData.wing}
+            </span>
+          </div>
+
+          {/* Center: Sleek 19-Segment Interactive Progress Track */}
+          <div className="hero-deck-progress-track">
+            {heroSlides.map((slide, idx) => {
+              const isActive = currentSlide === idx;
+              return (
+                <button
+                  key={slide.image}
+                  type="button"
+                  onClick={() => goToSlide(idx)}
+                  className={`hero-progress-segment ${isActive ? 'is-active' : ''}`}
+                  title={`Exhibit ${idx + 1} of 19: ${slide.wing} — ${slide.badge}`}
+                  aria-label={`Jump to slide ${idx + 1} of 19: ${slide.wing}`}
+                >
+                  <span className="hero-progress-bar-bg">
+                    <span
+                      className="hero-progress-bar-fill"
+                      style={{
+                        backgroundColor: isActive ? slide.accentColor : undefined,
+                        animationDuration: `${SLIDE_DURATION}ms`,
+                        animationPlayState: isPlaying && isActive ? 'running' : 'paused',
+                      }}
+                    />
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Right: Autoplay Pause/Play Button & Quick Prev/Next Mini Controls */}
+          <div className="hero-deck-right">
+            <button
+              type="button"
+              onClick={() => setIsPlaying(!isPlaying)}
+              className="hero-deck-playpause-btn"
+              title={isPlaying ? 'Pause Auto-Rotation' : 'Resume Auto-Rotation'}
+              aria-label={isPlaying ? 'Pause Auto-Rotation' : 'Resume Auto-Rotation'}
+            >
+              {isPlaying ? (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                  <rect x="6" y="4" width="4" height="16" rx="1" />
+                  <rect x="14" y="4" width="4" height="16" rx="1" />
+                </svg>
+              ) : (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3" />
+                </svg>
+              )}
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   );

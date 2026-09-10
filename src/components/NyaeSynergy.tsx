@@ -21,11 +21,11 @@ export default function NyaeSynergy() {
             boxShadow: '0 8px 30px rgba(15, 23, 42, 0.04)',
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: '40px',
+            gap: '48px',
             alignItems: 'center',
           }}
         >
-          {/* Text & Action */}
+          {/* Left Column: Text & Action */}
           <div>
             <span className="section-tag" style={{ marginBottom: '14px' }}>
               Dual Charter Synergy
@@ -73,27 +73,68 @@ export default function NyaeSynergy() {
             </a>
           </div>
 
-          {/* Official Logo Card Display */}
-          <div
+          {/* Right Column: High-Contrast Official Institutional Badge */}
+          <a
+            href="https://newyorkautoexperience.org/"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
-              backgroundColor: '#FFFFFF',
-              border: '1px solid #E2E8F0',
-              borderRadius: '16px',
-              padding: '40px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 4px 20px rgba(15, 23, 42, 0.05)',
+              textDecoration: 'none',
+              display: 'block',
             }}
           >
-            <Image
-              src="/images/NYAE-logo.png"
-              alt="The New York Auto Experience logo"
-              width={320}
-              height={100}
-              style={{ objectFit: 'contain', height: 'auto' }}
-            />
-          </div>
+            <div
+              style={{
+                background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                borderRadius: '20px',
+                padding: '44px 36px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 12px 35px rgba(15, 23, 42, 0.25)',
+                transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+              }}
+            >
+              {/* Authentic White NYAE Logo (Now razor-sharp on luxury dark background) */}
+              <div style={{ position: 'relative', width: '100%', maxWidth: '320px', height: '90px' }}>
+                <Image
+                  src="/images/NYAE-logo.png"
+                  alt="The New York Auto Experience logo"
+                  fill
+                  style={{ objectFit: 'contain' }}
+                />
+              </div>
+
+              {/* Verified Institutional Subtitle */}
+              <div
+                style={{
+                  marginTop: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '6px 14px',
+                  borderRadius: '9999px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                }}
+              >
+                <span style={{ color: '#E63946', fontSize: '0.8rem' }}>●</span>
+                <span
+                  style={{
+                    color: '#CBD5E1',
+                    fontSize: '0.78rem',
+                    fontWeight: 700,
+                    letterSpacing: '0.06em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  501(c)(3) Public Charity • EIN 92-2822778
+                </span>
+              </div>
+            </div>
+          </a>
         </div>
       </div>
     </section>

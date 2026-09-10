@@ -1,9 +1,10 @@
-﻿import Link from 'next/link';
+import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import HeroSlideshow from '@/components/HeroSlideshow';
 import PastFuture from '@/components/PastFuture';
 import MuseumSpotlights from '@/components/MuseumSpotlights';
 import NyaeSynergy from '@/components/NyaeSynergy';
+import Accreditations from '@/components/Accreditations';
 import NewsletterSection from '@/components/NewsletterSection';
 import Footer from '@/components/Footer';
 
@@ -15,7 +16,6 @@ export default function HomePage() {
         <HeroSlideshow />
         <PastFuture />
         <MuseumSpotlights />
-        <NyaeSynergy />
 
         {/* Multi-Page Department Exploration Gateway */}
         <section
@@ -207,6 +207,8 @@ export default function HomePage() {
         </section>
 
         <NewsletterSection />
+        <NyaeSynergy />
+        <Accreditations />
       </main>
       <Footer />
     </div>

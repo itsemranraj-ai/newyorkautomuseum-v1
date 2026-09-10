@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState } from 'react';
 import Image from 'next/image';
@@ -51,11 +51,11 @@ export default function Navbar() {
           }}
         >
           <Image
-            src="/images/NYAM-master logo-transparent-bg.png"
-            alt="New York Auto Museum"
-            width={170}
-            height={50}
-            style={{ objectFit: 'contain', height: 'auto' }}
+            src="/images/logo-dark.png"
+            alt="The New York Auto Experience"
+            width={180}
+            height={52}
+            style={{ objectFit: 'contain', height: '44px', width: 'auto' }}
             priority
           />
         </Link>

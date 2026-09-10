@@ -1,185 +1,251 @@
-﻿import Image from 'next/image';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Footer() {
   return (
     <footer
       id="footer"
       style={{
-        backgroundColor: '#F1F5F9',
+        backgroundColor: '#FFFFFF',
         borderTop: '1px solid #E2E8F0',
-        padding: '80px 0 40px 0',
         color: '#475569',
-        fontSize: '0.95rem',
+        fontSize: '0.92rem',
+        paddingTop: '70px',
+        paddingBottom: '40px',
       }}
     >
-      <div
-        className="container"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          textAlign: 'center',
-          gap: '36px',
-        }}
-      >
-        {/* Sponsored By */}
-        <div>
-          <h3
-            style={{
-              fontSize: '1.1rem',
-              fontWeight: 800,
-              color: '#0F172A',
-              marginBottom: '16px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.08em',
-            }}
-          >
-            Sponsored By:
-          </h3>
-          <a
-            href="https://www.dnb.com/en-us/"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-block',
-              padding: '12px 24px',
-              backgroundColor: '#FFFFFF',
-              borderRadius: '8px',
-              border: '1px solid #E2E8F0',
-              boxShadow: '0 2px 8px rgba(15, 23, 42, 0.04)',
-            }}
-          >
-            <Image
-              src="/images/sponsor1.jpg"
-              alt="Dun & Bradstreet"
-              width={160}
-              height={50}
-              style={{ objectFit: 'contain' }}
-            />
-          </a>
-        </div>
-
+      <div className="container">
+        {/* Tier 1: 4-Column Structured Directory */}
         <div
           style={{
-            width: '100%',
-            maxWidth: '600px',
-            height: '1px',
-            backgroundColor: '#E2E8F0',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+            gap: '40px',
+            marginBottom: '60px',
           }}
-        />
-
-        {/* Inquiries & Mailing Address */}
-        <div style={{ maxWidth: '650px', lineHeight: 1.8 }}>
-          <p style={{ marginBottom: '8px', color: '#1E293B', fontWeight: 500 }}>
-            For general inquiries — contact Museum&apos;s Executive Director{' '}
-            <strong style={{ color: '#0F172A', fontWeight: 700 }}>David Senater</strong>
-          </p>
-          <p style={{ marginBottom: '16px' }}>
-            Email:{' '}
-            <a
-              href="mailto:david.senater@newyorkautomuseum.com"
-              style={{ color: '#DC2626', textDecoration: 'none', fontWeight: 700 }}
+        >
+          {/* Column 1: Museum Identity & Sponsor */}
+          <div>
+            <Link href="/" style={{ display: 'inline-block', marginBottom: '18px' }}>
+              <div style={{ position: 'relative', width: '180px', height: '52px' }}>
+                <Image
+                  src="/images/logo-dark.png"
+                  alt="The New York Auto Experience"
+                  fill
+                  style={{ objectFit: 'contain', objectPosition: 'left' }}
+                />
+              </div>
+            </Link>
+            <p
+              style={{
+                fontSize: '0.9rem',
+                lineHeight: 1.7,
+                color: '#64748B',
+                marginBottom: '24px',
+              }}
             >
-              david.senater@newyorkautomuseum.com
-            </a>
-          </p>
+              Proposed 200,000+ sq ft Manhattan landmark uniting automotive science, historical heritage, and world-first interactive exhibition wings.
+            </p>
 
-          <div
-            style={{
-              marginTop: '24px',
-              padding: '24px',
-              borderRadius: '12px',
-              backgroundColor: '#FFFFFF',
-              border: '1px solid #E2E8F0',
-              boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)',
-            }}
-          >
-            <p style={{ fontWeight: 800, color: '#0F172A', marginBottom: '8px' }}>
-              Mailing Address:
+            {/* D&B Sponsor Plaque */}
+            <div
+              style={{
+                backgroundColor: '#F8FAFC',
+                border: '1px solid #E2E8F0',
+                borderRadius: '12px',
+                padding: '14px 18px',
+                display: 'inline-block',
+                maxWidth: '220px',
+              }}
+            >
+              <div
+                style={{
+                  fontSize: '0.72rem',
+                  fontWeight: 800,
+                  color: '#94A3B8',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  marginBottom: '8px',
+                }}
+              >
+                Sponsored By
+              </div>
+              <a
+                href="https://www.dnb.com/en-us/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: 'block' }}
+              >
+                <div style={{ position: 'relative', width: '140px', height: '36px' }}>
+                  <Image
+                    src="/images/sponsor1.jpg"
+                    alt="Dun & Bradstreet"
+                    fill
+                    style={{ objectFit: 'contain', objectPosition: 'left' }}
+                  />
+                </div>
+              </a>
+            </div>
+          </div>
+
+          {/* Column 2: Museum Directory */}
+          <div>
+            <h4
+              style={{
+                fontSize: '0.82rem',
+                fontWeight: 800,
+                color: '#0F172A',
+                textTransform: 'uppercase',
+                letterSpacing: '0.12em',
+                marginBottom: '20px',
+              }}
+            >
+              Museum Directory
+            </h4>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <li>
+                <Link
+                  href="/about"
+                  style={{ color: '#475569', textDecoration: 'none', fontWeight: 500 }}
+                >
+                  The Museum &amp; Vision
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/advisors"
+                  style={{ color: '#475569', textDecoration: 'none', fontWeight: 500 }}
+                >
+                  The Board &amp; Advisors
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/committees"
+                  style={{ color: '#475569', textDecoration: 'none', fontWeight: 500 }}
+                >
+                  Boards &amp; Committees
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/careers"
+                  style={{ color: '#475569', textDecoration: 'none', fontWeight: 500 }}
+                >
+                  Career Opportunities
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="https://newyorkautoexperience.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: '#0284C7', textDecoration: 'none', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                >
+                  NYAE 501(c)(3) Portal &rarr;
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 3: Executive Inquiries */}
+          <div>
+            <h4
+              style={{
+                fontSize: '0.82rem',
+                fontWeight: 800,
+                color: '#0F172A',
+                textTransform: 'uppercase',
+                letterSpacing: '0.12em',
+                marginBottom: '20px',
+              }}
+            >
+              General Inquiries
+            </h4>
+            <p style={{ color: '#64748B', lineHeight: 1.6, marginBottom: '14px' }}>
+              For general inquiries, contact Museum&apos;s Executive Director:
             </p>
-            <p style={{ color: '#475569' }}>New York Auto Museum Experience Center Inc</p>
-            <p style={{ color: '#475569' }}>767 Broadway #1671</p>
-            <p style={{ color: '#475569' }}>New York, New York, Manhattan 10003 USA</p>
-            <p style={{ marginTop: '10px', color: '#DC2626', fontWeight: 800, fontSize: '1.05rem' }}>
-              1-877-896-9269
+            <div style={{ marginBottom: '14px' }}>
+              <div style={{ fontWeight: 800, color: '#0F172A', fontSize: '1rem' }}>David Senater</div>
+              <div style={{ fontSize: '0.82rem', color: '#64748B' }}>Executive Director</div>
+            </div>
+            <p style={{ marginBottom: '10px' }}>
+              <a
+                href="mailto:david.senater@newyorkautomuseum.com"
+                style={{
+                  color: '#DC2626',
+                  textDecoration: 'none',
+                  fontWeight: 700,
+                  fontSize: '0.88rem',
+                  wordBreak: 'break-all',
+                }}
+              >
+                david.senater@newyorkautomuseum.com
+              </a>
             </p>
+            <p style={{ color: '#0F172A', fontWeight: 800, fontSize: '0.95rem' }}>
+              Toll Free: 1-877-896-9269
+            </p>
+          </div>
+
+          {/* Column 4: Headquarters & Mail */}
+          <div>
+            <h4
+              style={{
+                fontSize: '0.82rem',
+                fontWeight: 800,
+                color: '#0F172A',
+                textTransform: 'uppercase',
+                letterSpacing: '0.12em',
+                marginBottom: '20px',
+              }}
+            >
+              Mailing Address
+            </h4>
+            <div
+              style={{
+                backgroundColor: '#F8FAFC',
+                border: '1px solid #E2E8F0',
+                borderRadius: '12px',
+                padding: '20px',
+                lineHeight: 1.6,
+              }}
+            >
+              <div style={{ fontWeight: 800, color: '#0F172A', marginBottom: '6px' }}>
+                New York Auto Museum Experience Center Inc
+              </div>
+              <div style={{ color: '#475569' }}>767 Broadway #1671</div>
+              <div style={{ color: '#475569', marginBottom: '10px' }}>
+                New York, New York, Manhattan 10003 USA
+              </div>
+              <div style={{ color: '#DC2626', fontWeight: 800, fontSize: '1rem' }}>
+                1-877-896-9269
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Association & Partner Logos */}
+
+        {/* Tier 3: Sub-Footer Copyright & Legal */}
         <div
           style={{
+            borderTop: '1px solid #E2E8F0',
+            paddingTop: '24px',
             display: 'flex',
             flexWrap: 'wrap',
+            justifyContent: 'space-between',
             alignItems: 'center',
-            justifyContent: 'center',
-            gap: '28px',
-            marginTop: '10px',
-            padding: '28px',
-            backgroundColor: '#FFFFFF',
-            borderRadius: '14px',
-            border: '1px solid #E2E8F0',
-            width: '100%',
-            maxWidth: '900px',
-            boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)',
-          }}
-        >
-          <a href="https://naammuseums.org/" target="_blank" rel="noopener noreferrer">
-            <Image
-              src="/images/footer.png"
-              alt="NAAM - National Association of Automobile Museums"
-              width={240}
-              height={60}
-              style={{ objectFit: 'contain' }}
-            />
-          </a>
-          <a
-            href="https://www.nonprofitnewyork.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              src="/images/nonprofit-newyork.jpg"
-              alt="Nonprofit New York"
-              width={160}
-              height={50}
-              style={{ objectFit: 'contain' }}
-            />
-          </a>
-          <a href="https://nysmuseums.org/" target="_blank" rel="noopener noreferrer">
-            <Image
-              src="/images/museum_association_of_NY_logo.jpg"
-              alt="Museum Association of New York"
-              width={260}
-              height={60}
-              style={{ objectFit: 'contain' }}
-            />
-          </a>
-          <a href="https://www.aam-us.org/" target="_blank" rel="noopener noreferrer">
-            <Image
-              src="/images/alliance-member-logo-full-color-RGB.webp"
-              alt="American Alliance of Museums"
-              width={260}
-              height={60}
-              style={{ objectFit: 'contain' }}
-            />
-          </a>
-        </div>
-
-        {/* Copyright & Legal Entities */}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '6px',
-            fontSize: '0.85rem',
+            gap: '12px',
+            fontSize: '0.82rem',
             color: '#64748B',
-            marginTop: '16px',
           }}
         >
-          <div>&copy; New York Auto Museum 2020–2025</div>
-          <div>New York Auto Experience Inc. 501(c)(3)</div>
-          <div>1125042 Ontario Limited dba New York Auto Museum Inc.</div>
+          <div>&copy; New York Auto Museum 2020–2025. All rights reserved.</div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+            <span>New York Auto Experience Inc. 501(c)(3)</span>
+            <span>•</span>
+            <span>1125042 Ontario Limited dba New York Auto Museum Inc.</span>
+          </div>
         </div>
       </div>
     </footer>
